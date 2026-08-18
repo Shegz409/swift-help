@@ -293,8 +293,16 @@ function login(role = 'customer', name = 'Demo User') {
     verified: true
   };
   localStorage.setItem('swiftUser', JSON.stringify(currentUser));
-  showToast(`Welcome back, ${name.split(' ')[0]}`, 'success');
-  setTimeout(() => location.reload(), 900);
+  showToast(`Welcome, ${name.split(' ')[0]}`, 'success');
+  
+  setTimeout(() => {
+    const isInPages = window.location.pathname.includes('/pages/');
+    if (role === 'admin') {
+      location.href = isInPages ? '../admin.html' : 'admin.html';
+    } else {
+      location.href = isInPages ? '../index.html' : 'index.html';
+    }
+  }, 900);
 }
 
 function logout() {
@@ -378,10 +386,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const adminPath = isInPages ? '../admin.html' : 'admin.html';
 
     if (currentUser) {
+      let roleBadge = currentUser.role;
+      if (currentUser.status === 'pending') roleBadge = 'Pending';
+      
       authArea.innerHTML = `
         <div class="flex items-center gap-3">
           <span class="text-sm text-slate-600 hidden sm:inline font-medium">${currentUser.name.split(' ')[0]}</span>
-          <span class="badge badge-info text-xs">${currentUser.role}</span>
+          <span class="badge ${currentUser.status === 'pending' ? 'badge-warning' : 'badge-info'} text-xs">${roleBadge}</span>
           ${currentUser.role === 'admin' ? `<a href="${adminPath}" class="text-sky-600 text-sm font-semibold hover:underline">Admin</a>` : ''}
           <button onclick="logout()" class="text-sm text-red-500 hover:text-red-600 font-medium">Logout</button>
         </div>
@@ -389,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       authArea.innerHTML = `
         <a href="${loginPath}" class="btn-outline text-sm py-2 px-4">Login</a>
-        <a href="${loginPath}" class="btn-primary text-sm py-2 px-4">Get Started</a>
+        <a href="${loginPath}" class="btn-primary text-sm py-2 px-4">Sign Up</a>
       `;
     }
   }

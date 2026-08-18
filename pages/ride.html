@@ -166,7 +166,7 @@
         opt.classList.remove('border-transparent');
         selectedPrice = parseInt(opt.dataset.price);
         selectedType = opt.dataset.type;
-        document.getElementById('bookBtn').textContent = `Confirm ${opt.querySelector('.font-semibold').textContent} • ${Swift Help.formatNaira(selectedPrice)}`;
+        document.getElementById('bookBtn').textContent = `Confirm ${opt.querySelector('.font-semibold').textContent} • ${SwiftHelp.formatNaira(selectedPrice)}`;
       });
     });
 
@@ -207,13 +207,13 @@
     function bookRide() {
       const dropoff = document.getElementById('dropoff').value;
       if (!dropoff) {
-        Swift Help.showToast('Please enter a destination', 'error');
+        SwiftHelp.showToast('Please enter a destination', 'error');
         return;
       }
 
-      const commission = Math.round(selectedPrice * (Swift Help.commissionRate / 100));
-      document.getElementById('fareDisplay').textContent = Swift Help.formatNaira(selectedPrice);
-      document.getElementById('commissionDisplay').textContent = Swift Help.formatNaira(commission);
+      const commission = Math.round(selectedPrice * (SwiftHelp.commissionRate / 100));
+      document.getElementById('fareDisplay').textContent = SwiftHelp.formatNaira(selectedPrice);
+      document.getElementById('commissionDisplay').textContent = SwiftHelp.formatNaira(commission);
 
       document.getElementById('bookingSuccess').classList.remove('hidden');
       document.getElementById('bookingSuccess').classList.add('flex');

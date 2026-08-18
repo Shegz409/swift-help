@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login – Swift Help</title>
+  <title>Login / Sign Up – Swift Help</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -11,71 +11,231 @@
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
 
   <div class="w-full max-w-md">
-    <div class="text-center mb-8">
+    <div class="text-center mb-6">
       <a href="../index.html" class="inline-flex items-center gap-2">
         <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">S</div>
       </a>
-      <h1 class="text-2xl font-bold mt-4">Welcome to Swift Help</h1>
-      <p class="text-slate-500 text-sm mt-1">Login or continue as demo user</p>
+      <h1 class="text-2xl font-bold mt-4">Swift Help</h1>
+      <p class="text-slate-500 text-sm mt-1">Secure login with OTP verification</p>
     </div>
 
-    <div class="card p-6">
-      <!-- Role selector for demo -->
-      <div class="mb-6">
-        <label class="block text-sm font-medium mb-2">Continue as</label>
+    <!-- Tabs -->
+    <div class="flex bg-slate-100 rounded-xl p-1 mb-5">
+      <button id="tabLogin" onclick="showTab('login')" class="flex-1 py-2.5 rounded-lg text-sm font-semibold bg-white shadow text-sky-600">Login</button>
+      <button id="tabSignup" onclick="showTab('signup')" class="flex-1 py-2.5 rounded-lg text-sm font-medium text-slate-500">Sign Up</button>
+    </div>
+
+    <!-- LOGIN PANEL -->
+    <div id="panelLogin" class="card p-6">
+      <div class="mb-5">
+        <label class="block text-sm font-medium mb-2">Quick Demo Access</label>
         <div class="grid grid-cols-2 gap-2">
-          <button onclick="Swift Help.login('customer', 'Adaobi Customer')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="SwiftHelp.login('customer', 'Adaobi Customer')" class="py-3 px-2 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             👤 Customer
           </button>
-          <button onclick="Swift Help.login('provider', 'Adebayo Provider')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="SwiftHelp.login('provider', 'Adebayo Provider')" class="py-3 px-2 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🔧 Provider
           </button>
-          <button onclick="Swift Help.login('driver', 'Chinedu Driver')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="SwiftHelp.login('driver', 'Chinedu Driver')" class="py-3 px-2 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🛵 Driver
           </button>
-          <button onclick="Swift Help.login('admin', 'Admin User')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="SwiftHelp.login('admin', 'Admin User')" class="py-3 px-2 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🛡️ Admin
           </button>
         </div>
       </div>
 
-      <div class="relative my-6">
+      <div class="relative my-5">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-slate-400">or continue with email</span></div>
+        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-slate-400">or login with phone / email</span></div>
       </div>
 
-      <form onsubmit="event.preventDefault(); demoLogin();" class="space-y-4">
+      <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-1">Email</label>
-          <input type="email" id="email" value="demo@swifthelp.ng" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+          <label class="block text-sm font-medium mb-1">Phone or Email</label>
+          <input type="text" id="loginInput" placeholder="08012345678 or email@example.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+        </div>
+        <button onclick="startLoginOTP()" class="w-full btn-primary py-3.5">Send OTP</button>
+      </div>
+
+      <!-- OTP Section (hidden by default) -->
+      <div id="loginOTPSection" class="hidden mt-5 space-y-4">
+        <div class="bg-sky-50 border border-sky-100 rounded-xl p-3 text-sm text-sky-700">
+          OTP sent! For this demo use: <strong>123456</strong>
         </div>
         <div>
-          <label class="block text-sm font-medium mb-1">Password</label>
-          <input type="password" id="password" value="demo123" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+          <label class="block text-sm font-medium mb-1">Enter OTP</label>
+          <input type="text" id="loginOTP" maxlength="6" placeholder="123456" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500 tracking-widest text-center text-lg font-semibold" />
         </div>
-        <button type="submit" class="w-full btn-primary py-3.5">Login</button>
-      </form>
+        <button onclick="verifyLoginOTP()" class="w-full btn-primary py-3.5">Verify & Login</button>
+      </div>
     </div>
 
-    <p class="text-center text-sm text-slate-400 mt-6">
-      For the full version, real phone OTP and secure accounts will be used.
+    <!-- SIGNUP PANEL -->
+    <div id="panelSignup" class="card p-6 hidden">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-2">I want to sign up as</label>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="roleCustomer" onclick="setSignupRole('customer')" class="py-3 rounded-xl border-2 border-sky-500 bg-sky-50 text-sm font-semibold text-sky-700">Customer</button>
+          <button id="roleProvider" onclick="setSignupRole('provider')" class="py-3 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-600">Provider</button>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-sm font-medium mb-1">Full Name</label>
+          <input type="text" id="signupName" placeholder="Your full name" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Phone Number</label>
+          <input type="tel" id="signupPhone" placeholder="08012345678" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Email Address</label>
+          <input type="email" id="signupEmail" placeholder="you@email.com" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+        </div>
+
+        <!-- Provider extra fields -->
+        <div id="providerFields" class="hidden space-y-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Service Category</label>
+            <select id="signupCategory" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500">
+              <option value="home">Home Services</option>
+              <option value="walkin">Walk in Services</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Service Description</label>
+            <input type="text" id="signupService" placeholder="e.g. Plumbing, Cleaning, Salon..." class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500" />
+          </div>
+          <div class="bg-amber-50 border border-amber-100 rounded-xl p-3 text-xs text-amber-800">
+            Provider accounts require Admin approval before you can accept jobs. This protects customers from scams.
+          </div>
+        </div>
+
+        <button onclick="startSignupOTP()" class="w-full btn-primary py-3.5 mt-2">Send OTP to Phone & Email</button>
+      </div>
+
+      <!-- Signup OTP Section -->
+      <div id="signupOTPSection" class="hidden mt-5 space-y-4">
+        <div class="bg-sky-50 border border-sky-100 rounded-xl p-3 text-sm text-sky-700">
+          OTP sent to your phone and email!<br>For this demo use: <strong>123456</strong>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Enter OTP</label>
+          <input type="text" id="signupOTP" maxlength="6" placeholder="123456" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500 tracking-widest text-center text-lg font-semibold" />
+        </div>
+        <button onclick="verifySignupOTP()" class="w-full btn-primary py-3.5">Verify & Create Account</button>
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-slate-400 mt-6">
+      In the full version, real SMS OTP (Termii/Twilio) and email verification will be used.
     </p>
   </div>
 
   <script src="../js/app.js"></script>
   <script>
-    function demoLogin() {
-      const email = document.getElementById('email').value;
-      if (email.includes('admin')) {
-        Swift Help.login('admin', 'Admin User');
+    let signupRole = 'customer';
+
+    function showTab(tab) {
+      document.getElementById('panelLogin').classList.toggle('hidden', tab !== 'login');
+      document.getElementById('panelSignup').classList.toggle('hidden', tab !== 'signup');
+      document.getElementById('tabLogin').className = tab === 'login' 
+        ? 'flex-1 py-2.5 rounded-lg text-sm font-semibold bg-white shadow text-sky-600'
+        : 'flex-1 py-2.5 rounded-lg text-sm font-medium text-slate-500';
+      document.getElementById('tabSignup').className = tab === 'signup'
+        ? 'flex-1 py-2.5 rounded-lg text-sm font-semibold bg-white shadow text-sky-600'
+        : 'flex-1 py-2.5 rounded-lg text-sm font-medium text-slate-500';
+    }
+
+    function setSignupRole(role) {
+      signupRole = role;
+      document.getElementById('roleCustomer').className = role === 'customer'
+        ? 'py-3 rounded-xl border-2 border-sky-500 bg-sky-50 text-sm font-semibold text-sky-700'
+        : 'py-3 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-600';
+      document.getElementById('roleProvider').className = role === 'provider'
+        ? 'py-3 rounded-xl border-2 border-sky-500 bg-sky-50 text-sm font-semibold text-sky-700'
+        : 'py-3 rounded-xl border-2 border-slate-200 text-sm font-medium text-slate-600';
+      document.getElementById('providerFields').classList.toggle('hidden', role !== 'provider');
+    }
+
+    function startLoginOTP() {
+      const input = document.getElementById('loginInput').value.trim();
+      if (!input) {
+        SwiftHelp.showToast('Please enter phone or email', 'error');
+        return;
+      }
+      document.getElementById('loginOTPSection').classList.remove('hidden');
+      SwiftHelp.showToast('OTP sent successfully', 'success');
+    }
+
+    function verifyLoginOTP() {
+      const otp = document.getElementById('loginOTP').value.trim();
+      if (otp !== '123456') {
+        SwiftHelp.showToast('Invalid OTP. Use 123456 for demo', 'error');
+        return;
+      }
+      const input = document.getElementById('loginInput').value.toLowerCase();
+      if (input.includes('admin')) {
+        SwiftHelp.login('admin', 'Admin User');
       } else {
-        Swift Help.login('customer', 'Demo Customer');
+        SwiftHelp.login('customer', 'Verified Customer');
+      }
+    }
+
+    function startSignupOTP() {
+      const name = document.getElementById('signupName').value.trim();
+      const phone = document.getElementById('signupPhone').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+
+      if (!name || !phone || !email) {
+        SwiftHelp.showToast('Please fill all required fields', 'error');
+        return;
+      }
+      if (signupRole === 'provider') {
+        const service = document.getElementById('signupService').value.trim();
+        if (!service) {
+          SwiftHelp.showToast('Please enter your service type', 'error');
+          return;
+        }
+      }
+      document.getElementById('signupOTPSection').classList.remove('hidden');
+      SwiftHelp.showToast('OTP sent to phone and email', 'success');
+    }
+
+    function verifySignupOTP() {
+      const otp = document.getElementById('signupOTP').value.trim();
+      if (otp !== '123456') {
+        SwiftHelp.showToast('Invalid OTP. Use 123456 for demo', 'error');
+        return;
+      }
+
+      const name = document.getElementById('signupName').value.trim();
+      
+      if (signupRole === 'provider') {
+        // Provider goes to pending approval
+        const user = {
+          id: Date.now(),
+          name: name,
+          role: 'provider',
+          status: 'pending',
+          email: document.getElementById('signupEmail').value,
+          phone: document.getElementById('signupPhone').value,
+          service: document.getElementById('signupService').value,
+          verified: true
+        };
+        localStorage.setItem('swiftUser', JSON.stringify(user));
+        SwiftHelp.showToast('Account created! Waiting for Admin approval', 'warning');
+        setTimeout(() => location.href = '../index.html', 1500);
+      } else {
+        SwiftHelp.login('customer', name);
       }
     }
 
     // Auto redirect if already logged in
-    if (Swift Help.currentUser) {
-      if (Swift Help.currentUser.role === 'admin') {
+    if (SwiftHelp.currentUser) {
+      if (SwiftHelp.currentUser.role === 'admin') {
         location.href = '../admin.html';
       } else {
         location.href = '../index.html';

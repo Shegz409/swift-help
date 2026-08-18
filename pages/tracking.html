@@ -73,8 +73,8 @@
         <div class="card p-5">
           <h3 class="font-semibold mb-3">Contact</h3>
           <div class="flex gap-3">
-            <button class="flex-1 btn-outline text-sm py-2.5" onclick="Swift Help.showToast('Calling...', 'info')">📞 Call</button>
-            <button class="flex-1 btn-primary text-sm py-2.5" onclick="Swift Help.showToast('Chat opened', 'info')">💬 Chat</button>
+            <button class="flex-1 btn-outline text-sm py-2.5" onclick="SwiftHelp.showToast('Calling...', 'info')">📞 Call</button>
+            <button class="flex-1 btn-primary text-sm py-2.5" onclick="SwiftHelp.showToast('Chat opened', 'info')">💬 Chat</button>
           </div>
         </div>
 
@@ -102,7 +102,7 @@
     let targetPos, targetName, targetType;
 
     if (providerId) {
-      const p = Swift Help.MOCK_PROVIDERS.find(x => x.id == providerId);
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id == providerId);
       if (p) {
         targetPos = [p.lat, p.lng];
         targetName = p.name;
@@ -174,7 +174,7 @@
         </div>
       `;
       // Show some random providers
-      SwiftMaps.addProviderMarkers(map, Swift Help.MOCK_PROVIDERS.slice(0, 3));
+      SwiftMaps.addProviderMarkers(map, SwiftHelp.MOCK_PROVIDERS.slice(0, 3));
     }
   </script>
 </body>

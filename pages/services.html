@@ -106,7 +106,7 @@
   <script>
     let map, markers = [];
     let currentFilter = 'all';
-    let filteredProviders = [...Swift Help.MOCK_PROVIDERS];
+    let filteredProviders = [...SwiftHelp.MOCK_PROVIDERS];
 
     // Init map
     map = SwiftMaps.createMap('servicesMap', [6.52, 3.37], 12);
@@ -119,7 +119,7 @@
       renderProviders(filteredProviders);
     }
     if (params.get('id')) {
-      const p = Swift Help.MOCK_PROVIDERS.find(x => x.id == params.get('id'));
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id == params.get('id'));
       if (p) openProvider(p);
     }
 
@@ -163,14 +163,14 @@
       document.getElementById('btn-' + type).className = 'px-4 py-2 rounded-xl text-sm font-medium bg-sky-500 text-white';
 
       filteredProviders = type === 'all' 
-        ? [...Swift Help.MOCK_PROVIDERS] 
-        : Swift Help.MOCK_PROVIDERS.filter(p => p.category === type);
+        ? [...SwiftHelp.MOCK_PROVIDERS] 
+        : SwiftHelp.MOCK_PROVIDERS.filter(p => p.category === type);
       renderProviders(filteredProviders);
     }
 
     function searchProviders(q) {
       q = q.toLowerCase();
-      const base = currentFilter === 'all' ? Swift Help.MOCK_PROVIDERS : Swift Help.MOCK_PROVIDERS.filter(p => p.category === currentFilter);
+      const base = currentFilter === 'all' ? SwiftHelp.MOCK_PROVIDERS : SwiftHelp.MOCK_PROVIDERS.filter(p => p.category === currentFilter);
       filteredProviders = base.filter(p => 
         p.name.toLowerCase().includes(q) || 
         p.service.toLowerCase().includes(q) ||
@@ -239,11 +239,11 @@
     }
 
     function requestService(id, type) {
-      const p = Swift Help.MOCK_PROVIDERS.find(x => x.id === id);
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id === id);
       if (type === 'call') {
-        Swift Help.showToast(`Calling ${p.name}...`, 'info');
+        SwiftHelp.showToast(`Calling ${p.name}...`, 'info');
       } else {
-        Swift Help.showToast(`Service request sent to ${p.name}!`, 'success');
+        SwiftHelp.showToast(`Service request sent to ${p.name}!`, 'success');
         setTimeout(() => {
           closeModal();
           location.href = 'tracking.html?provider=' + id;
@@ -261,7 +261,7 @@
     });
 
     window.selectProvider = (id) => {
-      const p = Swift Help.MOCK_PROVIDERS.find(x => x.id === id);
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id === id);
       if (p) openProvider(p);
     };
   </script>

@@ -33,7 +33,7 @@
       </nav>
       <div class="p-4 border-t border-slate-700">
         <a href="index.html" class="block text-center text-sm text-slate-400 hover:text-white">← Back to Site</a>
-        <button onclick="Swift Help.logout()" class="w-full mt-2 text-sm text-red-400 hover:text-red-300">Logout</button>
+        <button onclick="SwiftHelp.logout()" class="w-full mt-2 text-sm text-red-400 hover:text-red-300">Logout</button>
       </div>
     </aside>
 
@@ -94,7 +94,7 @@
           <div class="card overflow-hidden">
             <div class="p-4 border-b flex justify-between items-center">
               <h3 class="font-semibold">All Users</h3>
-              <button class="btn-primary text-sm py-2 px-4" onclick="Swift Help.showToast('Invite sent (demo)', 'info')">+ Invite User</button>
+              <button class="btn-primary text-sm py-2 px-4" onclick="SwiftHelp.showToast('Invite sent (demo)', 'info')">+ Invite User</button>
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
@@ -264,7 +264,7 @@
                 <span class="text-sm font-medium">Require admin approval for providers</span>
                 <input type="checkbox" checked class="w-5 h-5 rounded" />
               </div>
-              <button class="btn-primary mt-4" onclick="Swift Help.showToast('Settings saved (demo)', 'success')">Save Settings</button>
+              <button class="btn-primary mt-4" onclick="SwiftHelp.showToast('Settings saved (demo)', 'success')">Save Settings</button>
             </div>
           </div>
         </section>
@@ -275,13 +275,15 @@
   <script src="js/app.js"></script>
   <script>
     // Simple auth check for demo
-    if (!Swift Help.currentUser || Swift Help.currentUser.role !== 'admin') {
-      // Allow access for demo but show notice
-      console.log('Demo mode: Admin access granted');
+    if (!SwiftHelp.currentUser || SwiftHelp.currentUser.role !== 'admin') {
+      // For demo we still allow viewing, but in production this would redirect
+      console.log('Demo mode: showing admin panel');
+      // Uncomment the next line in real version:
+      // location.href = 'index.html';
     }
 
-    if (Swift Help.currentUser) {
-      document.getElementById('adminName').textContent = Swift Help.currentUser.name;
+    if (SwiftHelp.currentUser) {
+      document.getElementById('adminName').textContent = SwiftHelp.currentUser.name;
     }
 
     function showSection(name) {
@@ -308,13 +310,13 @@
     }
 
     // Calculate stats
-    const jobs = Swift Help.MOCK_JOBS;
-    const rides = Swift Help.MOCK_RIDES;
+    const jobs = SwiftHelp.MOCK_JOBS;
+    const rides = SwiftHelp.MOCK_RIDES;
     const totalRevenue = jobs.reduce((s, j) => s + j.amount, 0) + rides.reduce((s, r) => s + r.fare, 0);
     const totalCommission = jobs.reduce((s, j) => s + j.commission, 0) + rides.reduce((s, r) => s + r.commission, 0);
 
-    document.getElementById('statRevenue').textContent = Swift Help.formatNaira(totalRevenue);
-    document.getElementById('statCommission').textContent = Swift Help.formatNaira(totalCommission);
+    document.getElementById('statRevenue').textContent = SwiftHelp.formatNaira(totalRevenue);
+    document.getElementById('statCommission').textContent = SwiftHelp.formatNaira(totalCommission);
     document.getElementById('statJobs').textContent = jobs.filter(j => j.status === 'in-progress').length + rides.filter(r => r.status === 'in-progress').length;
     document.getElementById('statUsers').textContent = '248';
 
@@ -326,7 +328,7 @@
           <div class="text-xs text-slate-400">${j.provider} → ${j.customer}</div>
         </div>
         <div class="text-right">
-          <div class="font-medium">${Swift Help.formatNaira(j.amount)}</div>
+          <div class="font-medium">${SwiftHelp.formatNaira(j.amount)}</div>
           <span class="badge ${j.status === 'completed' ? 'badge-success' : 'badge-warning'} text-[10px]">${j.status}</span>
         </div>
       </div>
@@ -339,7 +341,7 @@
           <div class="text-xs text-slate-400">${r.id}</div>
         </div>
         <div class="text-right">
-          <div class="font-medium">${Swift Help.formatNaira(r.fare)}</div>
+          <div class="font-medium">${SwiftHelp.formatNaira(r.fare)}</div>
           <span class="badge ${r.status === 'completed' ? 'badge-success' : 'badge-info'} text-[10px]">${r.status}</span>
         </div>
       </div>
@@ -352,8 +354,8 @@
         <td class="px-4 py-3">${j.type}</td>
         <td class="px-4 py-3">${j.provider}</td>
         <td class="px-4 py-3">${j.customer}</td>
-        <td class="px-4 py-3 font-medium">${Swift Help.formatNaira(j.amount)}</td>
-        <td class="px-4 py-3 text-emerald-600">${Swift Help.formatNaira(j.commission)}</td>
+        <td class="px-4 py-3 font-medium">${SwiftHelp.formatNaira(j.amount)}</td>
+        <td class="px-4 py-3 text-emerald-600">${SwiftHelp.formatNaira(j.commission)}</td>
         <td class="px-4 py-3"><span class="badge ${j.status === 'completed' ? 'badge-success' : 'badge-warning'}">${j.status}</span></td>
       </tr>
     `).join('');
@@ -363,15 +365,15 @@
       <tr class="border-t">
         <td class="px-4 py-3 font-mono text-xs">${r.id}</td>
         <td class="px-4 py-3">${r.from} → ${r.to}</td>
-        <td class="px-4 py-3 font-medium">${Swift Help.formatNaira(r.fare)}</td>
-        <td class="px-4 py-3 text-emerald-600">${Swift Help.formatNaira(r.commission)}</td>
+        <td class="px-4 py-3 font-medium">${SwiftHelp.formatNaira(r.fare)}</td>
+        <td class="px-4 py-3 text-emerald-600">${SwiftHelp.formatNaira(r.commission)}</td>
         <td class="px-4 py-3"><span class="badge ${r.status === 'completed' ? 'badge-success' : 'badge-info'}">${r.status}</span></td>
         <td class="px-4 py-3 text-slate-500">${r.date}</td>
       </tr>
     `).join('');
 
     // Providers
-    document.getElementById('providersAdmin').innerHTML = Swift Help.MOCK_PROVIDERS.map(p => `
+    document.getElementById('providersAdmin').innerHTML = SwiftHelp.MOCK_PROVIDERS.map(p => `
       <div class="card p-4">
         <div class="flex gap-3">
           <img src="${p.image}" class="w-14 h-14 rounded-xl object-cover" />
@@ -385,8 +387,8 @@
           </div>
         </div>
         <div class="flex gap-2 mt-3">
-          <button class="flex-1 text-xs py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200" onclick="Swift Help.showToast('Provider details (demo)')">View</button>
-          <button class="flex-1 text-xs py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" onclick="Swift Help.showToast('Provider suspended (demo)', 'info')">Suspend</button>
+          <button class="flex-1 text-xs py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200" onclick="SwiftHelp.showToast('Provider details (demo)')">View</button>
+          <button class="flex-1 text-xs py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" onclick="SwiftHelp.showToast('Provider suspended (demo)', 'info')">Suspend</button>
         </div>
       </div>
     `).join('');
@@ -396,24 +398,24 @@
       document.getElementById('commissionValue').textContent = val + '%';
       const providerGets = 10000 * (1 - val/100);
       const platformGets = 10000 * (val/100);
-      document.getElementById('exJob').textContent = `Provider gets ${Swift Help.formatNaira(providerGets)}`;
-      document.getElementById('exEarn').textContent = Swift Help.formatNaira(platformGets);
+      document.getElementById('exJob').textContent = `Provider gets ${SwiftHelp.formatNaira(providerGets)}`;
+      document.getElementById('exEarn').textContent = SwiftHelp.formatNaira(platformGets);
     }
 
     function saveCommission() {
       const rate = document.getElementById('commissionSlider').value;
-      Swift Help.setCommission(parseFloat(rate));
-      Swift Help.showToast(`Commission rate set to ${rate}%`, 'success');
+      SwiftHelp.setCommission(parseFloat(rate));
+      SwiftHelp.showToast(`Commission rate set to ${rate}%`, 'success');
     }
 
     // Init slider
-    document.getElementById('commissionSlider').value = Swift Help.commissionRate;
-    updateCommissionPreview(Swift Help.commissionRate);
+    document.getElementById('commissionSlider').value = SwiftHelp.commissionRate;
+    updateCommissionPreview(SwiftHelp.commissionRate);
 
     document.getElementById('commissionSummary').innerHTML = `
-      <div class="flex justify-between"><span>Jobs commission earned</span><span class="font-medium text-emerald-600">${Swift Help.formatNaira(jobs.reduce((s,j)=>s+j.commission,0))}</span></div>
-      <div class="flex justify-between"><span>Rides commission earned</span><span class="font-medium text-emerald-600">${Swift Help.formatNaira(rides.reduce((s,r)=>s+r.commission,0))}</span></div>
-      <div class="flex justify-between border-t pt-2 mt-2"><span class="font-semibold">Total Platform Earnings</span><span class="font-bold text-emerald-600">${Swift Help.formatNaira(totalCommission)}</span></div>
+      <div class="flex justify-between"><span>Jobs commission earned</span><span class="font-medium text-emerald-600">${SwiftHelp.formatNaira(jobs.reduce((s,j)=>s+j.commission,0))}</span></div>
+      <div class="flex justify-between"><span>Rides commission earned</span><span class="font-medium text-emerald-600">${SwiftHelp.formatNaira(rides.reduce((s,r)=>s+r.commission,0))}</span></div>
+      <div class="flex justify-between border-t pt-2 mt-2"><span class="font-semibold">Total Platform Earnings</span><span class="font-bold text-emerald-600">${SwiftHelp.formatNaira(totalCommission)}</span></div>
     `;
   </script>
 </body>
