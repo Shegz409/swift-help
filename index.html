@@ -29,7 +29,7 @@
       <div class="flex items-center justify-between h-16">
         <a href="index.html" class="flex items-center gap-2">
           <div class="w-9 h-9 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">S</div>
-          <span class="font-bold text-xl tracking-tight">Swift<span class="text-sky-500">Help</span></span>
+          <span class="font-bold text-xl tracking-tight">Swift Help</span>
         </a>
 
         <div class="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -61,7 +61,7 @@
           Help is just a <span class="text-amber-300">tap</span> away
         </h1>
         <p class="text-lg md:text-xl text-sky-100 mb-8">
-          Book home services, shop the marketplace, or hop on a tricycle — all with live maps and real-time tracking.
+          Book home services, shop the marketplace, or hop on a tricycle — all with live maps and real-time tracking. Payments are secured through the platform.
         </p>
 
         <!-- Search -->
@@ -95,7 +95,7 @@
       <a href="pages/services.html?type=walkin" class="card p-6 flex items-center gap-4 hover:-translate-y-1 transition-transform">
         <div class="w-14 h-14 bg-purple-100 rounded-2xl flex items-center justify-center text-2xl">🏪</div>
         <div>
-          <h3 class="font-bold text-lg">Walk-in Services</h3>
+          <h3 class="font-bold text-lg">Walk in Services</h3>
           <p class="text-sm text-slate-500">Salon, repairs, restaurants…</p>
         </div>
       </a>
@@ -205,7 +205,7 @@
         <div>
           <div class="flex items-center gap-2 text-white mb-4">
             <div class="w-8 h-8 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-lg flex items-center justify-center font-bold">S</div>
-            <span class="font-bold text-lg">SwiftHelp</span>
+            <span class="font-bold text-lg">Swift Help</span>
           </div>
           <p class="text-sm">Your local services, marketplace and ride partner.</p>
         </div>
@@ -213,7 +213,7 @@
           <h4 class="text-white font-semibold mb-3">Services</h4>
           <ul class="space-y-2 text-sm">
             <li><a href="pages/services.html" class="hover:text-white">Home Services</a></li>
-            <li><a href="pages/services.html" class="hover:text-white">Walk-in Services</a></li>
+            <li><a href="pages/services.html" class="hover:text-white">Walk in Services</a></li>
             <li><a href="pages/ride.html" class="hover:text-white">Tricycle Rides</a></li>
           </ul>
         </div>
@@ -271,11 +271,11 @@
   <script>
     // Home map
     const map = SwiftMaps.createMap('homeMap', [6.52, 3.37], 12);
-    SwiftMaps.addProviderMarkers(map, SwiftHelp.MOCK_PROVIDERS);
+    SwiftMaps.addProviderMarkers(map, Swift Help.MOCK_PROVIDERS);
 
     // Provider list
     const list = document.getElementById('providerList');
-    SwiftHelp.MOCK_PROVIDERS.slice(0, 4).forEach(p => {
+    Swift Help.MOCK_PROVIDERS.slice(0, 4).forEach(p => {
       list.innerHTML += `
         <div class="card p-4 flex gap-4 provider-card">
           <img src="${p.image}" alt="${p.name}" class="w-20 h-20 rounded-xl object-cover" />
@@ -285,7 +285,7 @@
                 <h3 class="font-semibold truncate">${p.name}</h3>
                 <p class="text-sm text-slate-500">${p.service}</p>
               </div>
-              <span class="badge ${p.category === 'home' ? 'badge-info' : 'badge-gray'}">${p.category === 'home' ? 'Home' : 'Walk-in'}</span>
+              <span class="badge ${p.category === 'home' ? 'badge-info' : 'badge-gray'}">${p.category === 'home' ? 'Home' : 'Walk in'}</span>
             </div>
             <div class="flex items-center gap-2 mt-1 text-sm">
               <span class="text-amber-500">★ ${p.rating}</span>
@@ -300,7 +300,7 @@
 
     // Product preview
     const preview = document.getElementById('productPreview');
-    SwiftHelp.MOCK_PRODUCTS.slice(0, 4).forEach(p => {
+    Swift Help.MOCK_PRODUCTS.slice(0, 4).forEach(p => {
       preview.innerHTML += `
         <div class="card overflow-hidden group">
           <div class="relative aspect-square overflow-hidden">
@@ -310,10 +310,10 @@
           <div class="p-3">
             <h3 class="font-medium text-sm truncate">${p.name}</h3>
             <div class="flex items-center gap-2 mt-1">
-              <span class="font-bold text-sky-600">${SwiftHelp.formatNaira(p.price)}</span>
-              ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through">${SwiftHelp.formatNaira(p.oldPrice)}</span>` : ''}
+              <span class="font-bold text-sky-600">${Swift Help.formatNaira(p.price)}</span>
+              ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through">${Swift Help.formatNaira(p.oldPrice)}</span>` : ''}
             </div>
-            <button onclick="SwiftHelp.addToCart(${p.id})" class="mt-2 w-full bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-semibold py-2 rounded-lg transition">
+            <button onclick="Swift Help.addToCart(${p.id})" class="mt-2 w-full bg-sky-50 hover:bg-sky-100 text-sky-700 text-xs font-semibold py-2 rounded-lg transition">
               Add to Cart
             </button>
           </div>

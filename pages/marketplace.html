@@ -39,7 +39,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
       <div>
         <h1 class="text-2xl md:text-3xl font-bold">Marketplace</h1>
-        <p class="text-slate-500">Buy from trusted local sellers</p>
+        <p class="text-slate-500">Buy from verified local sellers • Secure payments</p>
       </div>
       <div class="flex gap-2 overflow-x-auto pb-1">
         <button onclick="filterCat('all')" class="cat-btn active px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-sky-500 text-white">All</button>
@@ -119,10 +119,10 @@
             <p class="text-xs text-slate-400 mt-0.5">${p.seller}</p>
             <div class="flex items-center gap-1 mt-1 text-xs text-amber-500">★ ${p.rating}</div>
             <div class="flex items-center gap-2 mt-2">
-              <span class="font-bold text-sky-600">${SwiftHelp.formatNaira(p.price)}</span>
-              ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through">${SwiftHelp.formatNaira(p.oldPrice)}</span>` : ''}
+              <span class="font-bold text-sky-600">${Swift Help.formatNaira(p.price)}</span>
+              ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through">${Swift Help.formatNaira(p.oldPrice)}</span>` : ''}
             </div>
-            <button onclick="SwiftHelp.addToCart(${p.id}); renderCart();" 
+            <button onclick="Swift Help.addToCart(${p.id}); renderCart();" 
               class="mt-3 w-full bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold py-2.5 rounded-xl transition active:scale-95">
               Add to Cart
             </button>
@@ -138,7 +138,7 @@
       });
       event.target.className = 'cat-btn active px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-sky-500 text-white';
       
-      const list = cat === 'all' ? SwiftHelp.MOCK_PRODUCTS : SwiftHelp.MOCK_PRODUCTS.filter(p => p.category === cat);
+      const list = cat === 'all' ? Swift Help.MOCK_PRODUCTS : Swift Help.MOCK_PRODUCTS.filter(p => p.category === cat);
       renderProducts(list);
     }
 
@@ -177,31 +177,31 @@
           <img src="${item.image}" class="w-16 h-16 rounded-lg object-cover" />
           <div class="flex-1 min-w-0">
             <h4 class="font-medium text-sm truncate">${item.name}</h4>
-            <p class="text-sky-600 font-semibold text-sm">${SwiftHelp.formatNaira(item.price)}</p>
+            <p class="text-sky-600 font-semibold text-sm">${Swift Help.formatNaira(item.price)}</p>
             <div class="flex items-center gap-3 mt-2">
-              <button onclick="SwiftHelp.updateQty(${item.id}, -1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">−</button>
+              <button onclick="Swift Help.updateQty(${item.id}, -1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">−</button>
               <span class="font-medium text-sm">${item.qty}</span>
-              <button onclick="SwiftHelp.updateQty(${item.id}, 1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">+</button>
-              <button onclick="SwiftHelp.removeFromCart(${item.id}); renderCart();" class="ml-auto text-red-500 text-xs">Remove</button>
+              <button onclick="Swift Help.updateQty(${item.id}, 1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">+</button>
+              <button onclick="Swift Help.removeFromCart(${item.id}); renderCart();" class="ml-auto text-red-500 text-xs">Remove</button>
             </div>
           </div>
         </div>
       `).join('');
 
-      document.getElementById('cartTotal').textContent = SwiftHelp.formatNaira(SwiftHelp.getCartTotal());
+      document.getElementById('cartTotal').textContent = Swift Help.formatNaira(Swift Help.getCartTotal());
     }
 
     function checkout() {
       const cart = JSON.parse(localStorage.getItem('swiftCart')) || [];
       if (cart.length === 0) {
-        SwiftHelp.showToast('Cart is empty', 'error');
+        Swift Help.showToast('Cart is empty', 'error');
         return;
       }
-      const total = SwiftHelp.getCartTotal();
-      const commission = Math.round(total * (SwiftHelp.commissionRate / 100));
+      const total = Swift Help.getCartTotal();
+      const commission = Math.round(total * (Swift Help.commissionRate / 100));
       
-      SwiftHelp.showToast(`Order placed! Total: ${SwiftHelp.formatNaira(total)}`, 'success');
-      SwiftHelp.clearCart();
+      Swift Help.showToast(`Order placed! Total: ${Swift Help.formatNaira(total)}`, 'success');
+      Swift Help.clearCart();
       renderCart();
       setTimeout(() => {
         toggleCart();
@@ -210,7 +210,7 @@
     }
 
     // Init
-    renderProducts(SwiftHelp.MOCK_PRODUCTS);
+    renderProducts(Swift Help.MOCK_PRODUCTS);
   </script>
 </body>
 </html>

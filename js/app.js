@@ -1,4 +1,4 @@
-/* Swift Help - Core Application Logic */
+/* Swift Help - Core Application Logic (Upgraded) */
 
 // ====================== MOCK DATA ======================
 const MOCK_PROVIDERS = [
@@ -6,7 +6,7 @@ const MOCK_PROVIDERS = [
     id: 1,
     name: "Adebayo Plumbing",
     category: "home",
-    service: "Plumbing & Repairs",
+    service: "Plumbing and Repairs",
     rating: 4.8,
     reviews: 124,
     price: "From ₦3,500",
@@ -16,14 +16,16 @@ const MOCK_PROVIDERS = [
     address: "15 Allen Avenue, Ikeja, Lagos",
     phone: "+234 801 234 5678",
     available: true,
+    approved: true,
     responseTime: "15 min",
-    description: "Professional plumbing, pipe repairs, water heater installation."
+    distance: 1.2,
+    description: "Professional plumbing, pipe repairs, water heater installation. Verified and insured."
   },
   {
     id: 2,
     name: "Chioma Beauty Salon",
     category: "walkin",
-    service: "Hair & Beauty",
+    service: "Hair and Beauty",
     rating: 4.9,
     reviews: 89,
     price: "From ₦2,000",
@@ -33,14 +35,16 @@ const MOCK_PROVIDERS = [
     address: "22 Admiralty Way, Lekki Phase 1",
     phone: "+234 802 345 6789",
     available: true,
-    responseTime: "Walk-in",
-    description: "Premium hair styling, manicure, pedicure and spa services."
+    approved: true,
+    responseTime: "Walk in",
+    distance: 3.8,
+    description: "Premium hair styling, manicure, pedicure and spa services. Verified provider."
   },
   {
     id: 3,
     name: "TechFix Gadgets",
     category: "walkin",
-    service: "Phone & Laptop Repair",
+    service: "Phone and Laptop Repair",
     rating: 4.7,
     reviews: 210,
     price: "From ₦1,500",
@@ -50,8 +54,10 @@ const MOCK_PROVIDERS = [
     address: "Computer Village, Ikeja",
     phone: "+234 803 456 7890",
     available: true,
-    responseTime: "Walk-in",
-    description: "Screen replacement, battery, software issues for all brands."
+    approved: true,
+    responseTime: "Walk in",
+    distance: 2.1,
+    description: "Screen replacement, battery, software issues for all brands. Platform verified."
   },
   {
     id: 4,
@@ -67,8 +73,10 @@ const MOCK_PROVIDERS = [
     address: "Victoria Island, Lagos",
     phone: "+234 804 567 8901",
     available: true,
+    approved: true,
     responseTime: "30 min",
-    description: "Professional home and office deep cleaning services."
+    distance: 5.4,
+    description: "Professional home and office deep cleaning services. Background checked."
   },
   {
     id: 5,
@@ -84,8 +92,10 @@ const MOCK_PROVIDERS = [
     address: "Surulere, Lagos",
     phone: "+234 805 678 9012",
     available: true,
+    approved: true,
     responseTime: "20 min",
-    description: "Wiring, generator installation, solar panel setup."
+    distance: 2.9,
+    description: "Wiring, generator installation, solar panel setup. Fully verified."
   },
   {
     id: 6,
@@ -101,8 +111,10 @@ const MOCK_PROVIDERS = [
     address: "Yaba, Lagos",
     phone: "+234 806 789 0123",
     available: true,
-    responseTime: "Walk-in / Delivery",
-    description: "Delicious local and continental dishes. Fast service."
+    approved: true,
+    responseTime: "Walk in / Delivery",
+    distance: 4.2,
+    description: "Delicious local and continental dishes. Fast service. Platform partner."
   }
 ];
 
@@ -117,7 +129,8 @@ const MOCK_PRODUCTS = [
     seller: "TechHub Store",
     rating: 4.7,
     stock: 12,
-    description: "6.5\" display, 128GB storage, 5000mAh battery"
+    verified: true,
+    description: "6.5 inch display, 128GB storage, 5000mAh battery"
   },
   {
     id: 102,
@@ -129,7 +142,8 @@ const MOCK_PRODUCTS = [
     seller: "SneakerWorld",
     rating: 4.8,
     stock: 8,
-    description: "Comfortable running sneakers - Size 40-45"
+    verified: true,
+    description: "Comfortable running sneakers - Size 40 to 45"
   },
   {
     id: 103,
@@ -141,6 +155,7 @@ const MOCK_PRODUCTS = [
     seller: "HomeEssentials",
     rating: 4.4,
     stock: 25,
+    verified: true,
     description: "USB rechargeable, perfect for smoothies on the go"
   },
   {
@@ -153,11 +168,12 @@ const MOCK_PRODUCTS = [
     seller: "SoundMax",
     rating: 4.6,
     stock: 30,
-    description: "ANC, 30hr battery, IPX5 waterproof"
+    verified: true,
+    description: "Active Noise Cancellation, 30hr battery, waterproof"
   },
   {
     id: 105,
-    name: "Organic Shea Butter (1kg)",
+    name: "Organic Shea Butter 1kg",
     category: "Beauty",
     price: 4500,
     oldPrice: 5500,
@@ -165,6 +181,7 @@ const MOCK_PRODUCTS = [
     seller: "NatureCare",
     rating: 4.9,
     stock: 50,
+    verified: true,
     description: "100% pure Nigerian shea butter, unrefined"
   },
   {
@@ -177,11 +194,12 @@ const MOCK_PRODUCTS = [
     seller: "GadgetZone",
     rating: 4.5,
     stock: 15,
-    description: "Heart rate, SpO2, GPS, 7-day battery"
+    verified: true,
+    description: "Heart rate, SpO2, GPS, 7 day battery life"
   },
   {
     id: 107,
-    name: "Ankara Fabric (6 yards)",
+    name: "Ankara Fabric 6 yards",
     category: "Fashion",
     price: 8500,
     oldPrice: 10000,
@@ -189,6 +207,7 @@ const MOCK_PRODUCTS = [
     seller: "AnkaraKing",
     rating: 4.7,
     stock: 40,
+    verified: true,
     description: "Premium quality African print fabric"
   },
   {
@@ -201,30 +220,38 @@ const MOCK_PRODUCTS = [
     seller: "SolarTech",
     rating: 4.3,
     stock: 22,
+    verified: true,
     description: "Solar + USB-C fast charging, dual ports"
   }
 ];
 
+const MOCK_NOTIFICATIONS = [
+  { id: 1, title: "New job request", message: "Plumbing job in Ikeja - ₦7,500", time: "2 min ago", type: "job", unread: true },
+  { id: 2, title: "Payment released", message: "₦6,375 has been sent to your account", time: "1 hour ago", type: "payment", unread: true },
+  { id: 3, title: "New ride request nearby", message: "Customer 1.1km away needs a tricycle", time: "3 hours ago", type: "ride", unread: false },
+  { id: 4, title: "Provider application", message: "New provider waiting for approval", time: "Yesterday", type: "admin", unread: true }
+];
+
 const MOCK_RIDES = [
-  { id: "R001", from: "Ikeja", to: "Lekki", status: "completed", fare: 2500, commission: 375, date: "2026-08-17" },
-  { id: "R002", from: "Yaba", to: "Surulere", status: "completed", fare: 1800, commission: 270, date: "2026-08-17" },
-  { id: "R003", from: "VI", to: "Ikoyi", status: "in-progress", fare: 1200, commission: 180, date: "2026-08-18" }
+  { id: "R001", from: "Ikeja", to: "Lekki", status: "completed", fare: 2500, commission: 375, payment: "card", date: "2026-08-17" },
+  { id: "R002", from: "Yaba", to: "Surulere", status: "completed", fare: 1800, commission: 270, payment: "cash", date: "2026-08-17" },
+  { id: "R003", from: "VI", to: "Ikoyi", status: "in-progress", fare: 1200, commission: 180, payment: "card", date: "2026-08-18" }
 ];
 
 const MOCK_JOBS = [
-  { id: "J001", type: "Plumbing", provider: "Adebayo Plumbing", customer: "John O.", amount: 7500, commission: 1125, status: "completed", date: "2026-08-16" },
-  { id: "J002", type: "Deep Cleaning", provider: "GreenClean", customer: "Sarah A.", amount: 15000, commission: 2250, status: "completed", date: "2026-08-17" },
-  { id: "J003", type: "Electrical", provider: "PowerFix", customer: "Mike T.", amount: 12000, commission: 1800, status: "in-progress", date: "2026-08-18" }
+  { id: "J001", type: "Plumbing", provider: "Adebayo Plumbing", customer: "John O.", amount: 7500, commission: 1125, status: "completed", payment: "card", date: "2026-08-16" },
+  { id: "J002", type: "Deep Cleaning", provider: "GreenClean", customer: "Sarah A.", amount: 15000, commission: 2250, status: "completed", payment: "card", date: "2026-08-17" },
+  { id: "J003", type: "Electrical", provider: "PowerFix", customer: "Mike T.", amount: 12000, commission: 1800, status: "in-progress", payment: "card", date: "2026-08-18" }
 ];
 
 // ====================== STATE ======================
 let currentUser = JSON.parse(localStorage.getItem('swiftUser')) || null;
 let cart = JSON.parse(localStorage.getItem('swiftCart')) || [];
-let commissionRate = parseFloat(localStorage.getItem('swiftCommission')) || 15; // default 15%
+let commissionRate = parseFloat(localStorage.getItem('swiftCommission')) || 15;
 
 // ====================== UTILITIES ======================
 function formatNaira(amount) {
-  return '₦' + amount.toLocaleString('en-NG');
+  return '₦' + Number(amount).toLocaleString('en-NG');
 }
 
 function saveCart() {
@@ -242,6 +269,9 @@ function updateCartBadge() {
 }
 
 function showToast(message, type = 'success') {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   toast.innerHTML = `<span>${message}</span>`;
@@ -250,33 +280,34 @@ function showToast(message, type = 'success') {
     toast.style.opacity = '0';
     toast.style.transition = 'opacity 0.3s';
     setTimeout(() => toast.remove(), 300);
-  }, 3000);
+  }, 3200);
 }
 
 function login(role = 'customer', name = 'Demo User') {
   currentUser = {
     id: Date.now(),
     name: name,
-    role: role, // customer | provider | driver | admin
+    role: role,
     email: role + '@swifthelp.ng',
-    phone: '+234 800 000 0000'
+    phone: '+234 800 000 0000',
+    verified: true
   };
   localStorage.setItem('swiftUser', JSON.stringify(currentUser));
-  showToast(`Logged in as ${role}`, 'success');
-  setTimeout(() => location.reload(), 800);
+  showToast(`Welcome back, ${name.split(' ')[0]}`, 'success');
+  setTimeout(() => location.reload(), 900);
 }
 
 function logout() {
   currentUser = null;
   localStorage.removeItem('swiftUser');
-  showToast('Logged out successfully', 'info');
+  showToast('You have been logged out', 'info');
   const homePath = window.location.pathname.includes('/pages/') ? '../index.html' : 'index.html';
   setTimeout(() => location.href = homePath, 800);
 }
 
 function requireAuth(roles = []) {
   if (!currentUser) {
-    showToast('Please login first', 'error');
+    showToast('Please login to continue', 'error');
     const loginPath = window.location.pathname.includes('/pages/') ? 'login.html' : 'pages/login.html';
     setTimeout(() => location.href = loginPath, 1000);
     return false;
@@ -292,7 +323,6 @@ function requireAuth(roles = []) {
 function addToCart(productId) {
   const product = MOCK_PRODUCTS.find(p => p.id === productId);
   if (!product) return;
-
   const existing = cart.find(item => item.id === productId);
   if (existing) {
     existing.qty += 1;
@@ -314,9 +344,8 @@ function updateQty(productId, delta) {
   const item = cart.find(i => i.id === productId);
   if (!item) return;
   item.qty += delta;
-  if (item.qty <= 0) {
-    removeFromCart(productId);
-  } else {
+  if (item.qty <= 0) removeFromCart(productId);
+  else {
     saveCart();
     if (typeof renderCart === 'function') renderCart();
   }
@@ -331,41 +360,48 @@ function clearCart() {
   saveCart();
 }
 
+// Nearby first sorting
+function getNearbyProviders(maxKm = 5) {
+  return [...MOCK_PROVIDERS]
+    .filter(p => p.approved)
+    .sort((a, b) => a.distance - b.distance);
+}
+
 // ====================== INIT ======================
 document.addEventListener('DOMContentLoaded', () => {
   updateCartBadge();
-  
-  // Update nav based on auth
+
   const authArea = document.getElementById('authArea');
   if (authArea) {
     const isInPages = window.location.pathname.includes('/pages/');
     const loginPath = isInPages ? 'login.html' : 'pages/login.html';
     const adminPath = isInPages ? '../admin.html' : 'admin.html';
-    
+
     if (currentUser) {
       authArea.innerHTML = `
         <div class="flex items-center gap-3">
-          <span class="text-sm text-slate-600 hidden sm:inline">Hi, ${currentUser.name.split(' ')[0]}</span>
+          <span class="text-sm text-slate-600 hidden sm:inline font-medium">${currentUser.name.split(' ')[0]}</span>
           <span class="badge badge-info text-xs">${currentUser.role}</span>
-          ${currentUser.role === 'admin' ? `<a href="${adminPath}" class="text-sky-600 text-sm font-medium hover:underline">Admin</a>` : ''}
+          ${currentUser.role === 'admin' ? `<a href="${adminPath}" class="text-sky-600 text-sm font-semibold hover:underline">Admin</a>` : ''}
           <button onclick="logout()" class="text-sm text-red-500 hover:text-red-600 font-medium">Logout</button>
         </div>
       `;
     } else {
       authArea.innerHTML = `
         <a href="${loginPath}" class="btn-outline text-sm py-2 px-4">Login</a>
-        <a href="${loginPath}?register=1" class="btn-primary text-sm py-2 px-4">Sign Up</a>
+        <a href="${loginPath}" class="btn-primary text-sm py-2 px-4">Get Started</a>
       `;
     }
   }
 });
 
-// Export for other scripts
+// Export
 window.SwiftHelp = {
   MOCK_PROVIDERS,
   MOCK_PRODUCTS,
   MOCK_RIDES,
   MOCK_JOBS,
+  MOCK_NOTIFICATIONS,
   formatNaira,
   addToCart,
   removeFromCart,
@@ -379,6 +415,7 @@ window.SwiftHelp = {
   currentUser,
   cart,
   commissionRate,
+  getNearbyProviders,
   setCommission: (rate) => {
     commissionRate = rate;
     localStorage.setItem('swiftCommission', rate);

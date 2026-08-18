@@ -22,18 +22,18 @@
     <div class="card p-6">
       <!-- Role selector for demo -->
       <div class="mb-6">
-        <label class="block text-sm font-medium mb-2">Demo Login As</label>
+        <label class="block text-sm font-medium mb-2">Continue as</label>
         <div class="grid grid-cols-2 gap-2">
-          <button onclick="SwiftHelp.login('customer', 'Adaobi Customer')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="Swift Help.login('customer', 'Adaobi Customer')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             👤 Customer
           </button>
-          <button onclick="SwiftHelp.login('provider', 'Adebayo Provider')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="Swift Help.login('provider', 'Adebayo Provider')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🔧 Provider
           </button>
-          <button onclick="SwiftHelp.login('driver', 'Chinedu Driver')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="Swift Help.login('driver', 'Chinedu Driver')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🛵 Driver
           </button>
-          <button onclick="SwiftHelp.login('admin', 'Admin User')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
+          <button onclick="Swift Help.login('admin', 'Admin User')" class="py-3 px-3 rounded-xl border-2 border-slate-200 hover:border-sky-500 hover:bg-sky-50 text-sm font-medium transition">
             🛡️ Admin
           </button>
         </div>
@@ -41,7 +41,7 @@
 
       <div class="relative my-6">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-200"></div></div>
-        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-slate-400">or email login (demo)</span></div>
+        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-slate-400">or continue with email</span></div>
       </div>
 
       <form onsubmit="event.preventDefault(); demoLogin();" class="space-y-4">
@@ -58,7 +58,7 @@
     </div>
 
     <p class="text-center text-sm text-slate-400 mt-6">
-      This is a demo prototype. No real authentication.
+      For the full version, real phone OTP and secure accounts will be used.
     </p>
   </div>
 
@@ -67,15 +67,15 @@
     function demoLogin() {
       const email = document.getElementById('email').value;
       if (email.includes('admin')) {
-        SwiftHelp.login('admin', 'Admin User');
+        Swift Help.login('admin', 'Admin User');
       } else {
-        SwiftHelp.login('customer', 'Demo Customer');
+        Swift Help.login('customer', 'Demo Customer');
       }
     }
 
     // Auto redirect if already logged in
-    if (SwiftHelp.currentUser) {
-      if (SwiftHelp.currentUser.role === 'admin') {
+    if (Swift Help.currentUser) {
+      if (Swift Help.currentUser.role === 'admin') {
         location.href = '../admin.html';
       } else {
         location.href = '../index.html';

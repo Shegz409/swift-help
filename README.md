@@ -1,100 +1,114 @@
-# Swift Help – Local Services + Marketplace + Rides Platform
+# Swift Help
 
-A modern front-end prototype for a multi-sided local platform inspired by Bolt/Uber + service marketplaces.
+**Local Services + Marketplace + Tricycle Rides Platform**
 
-## Features
+A modern multi-sided platform that lets customers:
+- Find & contact **home service** or **walk-in** providers
+- See provider locations on a live map
+- Buy & sell in a marketplace (with cart)
+- Book **tricycle rides** (Bolt/Uber style)
+- Track providers or drivers in real time
 
-### Customer Side
-- **Home Services** & **Walk-in Services** with live map view
-- Provider profiles, ratings, contact & request service
-- **Marketplace** – browse products, cart, checkout
-- **Tricycle / Ride Booking** – Uber/Bolt style map with pickup & drop-off
-- **Live Tracking** – monitor provider or driver movement on map
-- Mobile-friendly design with bottom navigation
-
-### Admin Dashboard
-- Overview stats (revenue, commission, active jobs, users)
-- Users management
-- Jobs & Orders tracking
-- Rides history
-- Providers management (view / suspend)
-- **Commission control** – set platform percentage per job (default 15%)
-- Platform settings
-
-### Other
-- Role-based demo login (Customer / Provider / Driver / Admin)
-- Cart persisted in localStorage
-- Interactive maps using Leaflet + OpenStreetMap
-- Responsive (mobile + desktop)
-
-## How to Run
-
-1. Open `index.html` in a modern browser, **or**
-2. Serve the folder with any static server:
-
-```bash
-# From the swift-help folder
-npx serve .
-# or
-python3 -m http.server 3000
-```
-
-Then visit `http://localhost:3000`
-
-## Demo Login
-
-Go to **Login** and choose a role:
-- **Customer** – normal user experience
-- **Provider** – service provider view
-- **Driver** – tricycle driver
-- **Admin** – full admin dashboard at `/admin.html`
-
-## Tech Stack
-
-- HTML5 + Tailwind CSS (CDN)
-- Vanilla JavaScript
-- Leaflet.js + OpenStreetMap (free maps, no API key needed for demo)
-- LocalStorage for cart & session
-
-## Important Notes
-
-This is a **high-fidelity front-end prototype**.
-
-For a real production app that supports 200+ concurrent users with:
-- Real user accounts & authentication
-- Live GPS tracking
-- Real payments
-- Automatic commission deduction
-- Push notifications
-- Scalable backend
-
-…you will need a proper backend (Node.js / Python / etc.), database, maps API keys (Google Maps or Mapbox), and hosting (Vercel, AWS, DigitalOcean, etc.).
-
-The code is structured so it can be connected to a real API later with minimal changes.
-
-## Folder Structure
-
-```
-swift-help/
-├── index.html          # Homepage
-├── admin.html          # Admin Dashboard
-├── css/style.css
-├── js/
-│   ├── app.js          # Core logic, mock data, cart, auth
-│   └── maps.js         # Leaflet map helpers
-└── pages/
-    ├── services.html   # Services + map
-    ├── marketplace.html
-    ├── ride.html       # Book tricycle
-    ├── tracking.html   # Live tracking
-    └── login.html
-```
-
-## Commission Model
-
-Admin can set the platform commission percentage (5–30%).  
-On every completed job / order / ride the platform automatically takes that percentage.
+Includes a full **Admin Dashboard** where the owner can monitor everything and set a **commission percentage** on every job/order/ride.
 
 ---
 
-Built as a complete interactive prototype for **Swift Help**.
+## Live Demo Features
+
+| Feature              | Status      |
+|----------------------|-------------|
+| Homepage             | ✅ Working  |
+| Services + Map       | ✅ Working  |
+| Marketplace + Cart   | ✅ Working  |
+| Book Tricycle Ride   | ✅ Working  |
+| Live Tracking        | ✅ Working  |
+| Admin Dashboard      | ✅ Working  |
+| Commission Control   | ✅ Working  |
+| Mobile Responsive    | ✅ Yes      |
+
+---
+
+## How to Run Locally
+
+1. Clone this repository
+2. Open the folder
+3. Open `index.html` in your browser  
+   **or** run a local server:
+
+```bash
+# Using Python
+python -m http.server 3000
+
+# Using Node
+npx serve .
+```
+
+Then visit: [http://localhost:3000](http://localhost:3000)
+
+---
+
+## Demo Login
+
+Go to **Login** page and choose a role:
+
+- **Customer** – normal user experience
+- **Provider** – service provider
+- **Driver** – tricycle driver
+- **Admin** – full admin dashboard (`/admin.html`)
+
+---
+
+## Admin Features
+
+- Overview (Revenue, Commission earnings, Active jobs, Users)
+- Users management
+- Jobs & Orders tracking
+- Rides history
+- Providers management
+- **Commission settings** (adjust platform percentage)
+- Platform settings
+
+Default commission: **15%**
+
+---
+
+## Tech Stack
+
+- HTML5 + Tailwind CSS
+- Vanilla JavaScript
+- Leaflet.js + OpenStreetMap (free maps)
+- LocalStorage (cart & session)
+
+---
+
+## Project Structure
+
+```
+swift-help/
+├── index.html              # Homepage
+├── admin.html              # Admin Dashboard
+├── css/style.css
+├── js/
+│   ├── app.js              # Core logic + mock data
+│   └── maps.js             # Map helpers
+└── pages/
+    ├── services.html
+    ├── marketplace.html
+    ├── ride.html
+    ├── tracking.html
+    └── login.html
+```
+
+---
+
+## Important Note
+
+This is a **high-fidelity front-end prototype**.  
+
+For a real production version that supports 200+ users with real payments, live GPS, and automatic commission collection, a backend + database + proper hosting will be needed later.
+
+---
+
+## License
+
+MIT

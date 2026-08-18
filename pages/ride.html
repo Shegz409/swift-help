@@ -99,7 +99,7 @@
       </div>
 
       <button id="bookBtn" onclick="bookRide()" class="w-full btn-primary py-4 text-base font-bold">
-        Confirm Tricycle • ₦1,800
+        Confirm Booking • ₦1,800
       </button>
     </div>
   </div>
@@ -121,7 +121,7 @@
           <span class="font-semibold">6 min</span>
         </div>
         <div class="flex justify-between">
-          <span class="text-slate-500">Platform fee (15%)</span>
+          <span class="text-slate-500">Platform fee (15%) — also applies to cash</span>
           <span class="font-semibold text-emerald-600" id="commissionDisplay">₦270</span>
         </div>
       </div>
@@ -166,7 +166,7 @@
         opt.classList.remove('border-transparent');
         selectedPrice = parseInt(opt.dataset.price);
         selectedType = opt.dataset.type;
-        document.getElementById('bookBtn').textContent = `Confirm ${opt.querySelector('.font-semibold').textContent} • ${SwiftHelp.formatNaira(selectedPrice)}`;
+        document.getElementById('bookBtn').textContent = `Confirm ${opt.querySelector('.font-semibold').textContent} • ${Swift Help.formatNaira(selectedPrice)}`;
       });
     });
 
@@ -207,13 +207,13 @@
     function bookRide() {
       const dropoff = document.getElementById('dropoff').value;
       if (!dropoff) {
-        SwiftHelp.showToast('Please enter a destination', 'error');
+        Swift Help.showToast('Please enter a destination', 'error');
         return;
       }
 
-      const commission = Math.round(selectedPrice * (SwiftHelp.commissionRate / 100));
-      document.getElementById('fareDisplay').textContent = SwiftHelp.formatNaira(selectedPrice);
-      document.getElementById('commissionDisplay').textContent = SwiftHelp.formatNaira(commission);
+      const commission = Math.round(selectedPrice * (Swift Help.commissionRate / 100));
+      document.getElementById('fareDisplay').textContent = Swift Help.formatNaira(selectedPrice);
+      document.getElementById('commissionDisplay').textContent = Swift Help.formatNaira(commission);
 
       document.getElementById('bookingSuccess').classList.remove('hidden');
       document.getElementById('bookingSuccess').classList.add('flex');
