@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Marketplace – Swift Help</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Navbar -->
+  <nav class="bg-white sticky top-0 z-40 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-9 h-9 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg">S</div>
+          <span class="font-bold text-xl">Swift<span class="text-sky-500">Help</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="services.html" class="hover:text-sky-600">Services</a>
+          <a href="marketplace.html" class="text-sky-600">Marketplace</a>
+          <a href="ride.html" class="hover:text-sky-600">Book Ride</a>
+          <a href="tracking.html" class="hover:text-sky-600">Track</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="toggleCart()" class="relative p-2 hover:bg-slate-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span class="cart-count cart-badge" style="display:none">0</span>
+          </button>
+          <div id="authArea"></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold">Marketplace</h1>
+        <p class="text-slate-500">Buy from trusted local sellers</p>
+      </div>
+      <div class="flex gap-2 overflow-x-auto pb-1">
+        <button onclick="filterCat('all')" class="cat-btn active px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-sky-500 text-white">All</button>
+        <button onclick="filterCat('Electronics')" class="cat-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-white border">Electronics</button>
+        <button onclick="filterCat('Fashion')" class="cat-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-white border">Fashion</button>
+        <button onclick="filterCat('Home')" class="cat-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-white border">Home</button>
+        <button onclick="filterCat('Beauty')" class="cat-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-white border">Beauty</button>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" id="productsGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+  <!-- Cart Sidebar -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/40 z-50 hidden" onclick="toggleCart()"></div>
+  <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-5 border-b flex items-center justify-between">
+      <h2 class="text-xl font-bold">Your Cart</h2>
+      <button onclick="toggleCart()" class="w-8 h-8 rounded-full hover:bg-slate-100 flex items-center justify-center">✕</button>
+    </div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-4">
+      <!-- Filled by JS -->
+    </div>
+    <div class="p-5 border-t bg-slate-50">
+      <div class="flex justify-between text-lg font-bold mb-4">
+        <span>Total</span>
+        <span id="cartTotal">₦0</span>
+      </div>
+      <button onclick="checkout()" class="w-full btn-primary py-3.5 text-base">
+        Proceed to Checkout
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <div class="bottom-nav md:hidden">
+    <div class="flex justify-around py-2">
+      <a href="../index.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        Home
+      </a>
+      <a href="services.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Services
+      </a>
+      <a href="marketplace.html" class="flex flex-col items-center text-sky-600 text-xs relative">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        Shop
+        <span class="cart-count absolute -top-1 right-3 cart-badge" style="display:none">0</span>
+      </a>
+      <a href="ride.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Ride
+      </a>
+    </div>
+  </div>
+  <div class="h-16 md:hidden"></div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    let currentCat = 'all';
+
+    function renderProducts(list) {
+      const grid = document.getElementById('productsGrid');
+      grid.innerHTML = list.map(p => `
+        <div class="card overflow-hidden group">
+          <div class="relative aspect-square overflow-hidden bg-slate-100">
+            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" />
+            ${p.oldPrice ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">-${Math.round((1-p.price/p.oldPrice)*100)}%</span>` : ''}
+            <span class="absolute top-2 right-2 bg-white/90 text-xs px-2 py-0.5 rounded-full font-medium">${p.category}</span>
+          </div>
+          <div class="p-3">
+            <h3 class="font-medium text-sm line-clamp-2 min-h-[40px]">${p.name}</h3>
+            <p class="text-xs text-slate-400 mt-0.5">${p.seller}</p>
+            <div class="flex items-center gap-1 mt-1 text-xs text-amber-500">★ ${p.rating}</div>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="font-bold text-sky-600">${SwiftHelp.formatNaira(p.price)}</span>
+              ${p.oldPrice ? `<span class="text-xs text-slate-400 line-through">${SwiftHelp.formatNaira(p.oldPrice)}</span>` : ''}
+            </div>
+            <button onclick="SwiftHelp.addToCart(${p.id}); renderCart();" 
+              class="mt-3 w-full bg-sky-500 hover:bg-sky-600 text-white text-sm font-semibold py-2.5 rounded-xl transition active:scale-95">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterCat(cat) {
+      currentCat = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = 'cat-btn px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-white border';
+      });
+      event.target.className = 'cat-btn active px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap bg-sky-500 text-white';
+      
+      const list = cat === 'all' ? SwiftHelp.MOCK_PRODUCTS : SwiftHelp.MOCK_PRODUCTS.filter(p => p.category === cat);
+      renderProducts(list);
+    }
+
+    function toggleCart() {
+      const sidebar = document.getElementById('cartSidebar');
+      const overlay = document.getElementById('cartOverlay');
+      const isOpen = !sidebar.classList.contains('translate-x-full');
+      
+      if (isOpen) {
+        sidebar.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+      } else {
+        renderCart();
+        sidebar.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      const cart = JSON.parse(localStorage.getItem('swiftCart')) || [];
+      
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-16 text-slate-400">
+            <div class="text-5xl mb-3">🛒</div>
+            <p>Your cart is empty</p>
+          </div>
+        `;
+        document.getElementById('cartTotal').textContent = '₦0';
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="flex gap-3">
+          <img src="${item.image}" class="w-16 h-16 rounded-lg object-cover" />
+          <div class="flex-1 min-w-0">
+            <h4 class="font-medium text-sm truncate">${item.name}</h4>
+            <p class="text-sky-600 font-semibold text-sm">${SwiftHelp.formatNaira(item.price)}</p>
+            <div class="flex items-center gap-3 mt-2">
+              <button onclick="SwiftHelp.updateQty(${item.id}, -1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">−</button>
+              <span class="font-medium text-sm">${item.qty}</span>
+              <button onclick="SwiftHelp.updateQty(${item.id}, 1); renderCart();" class="w-7 h-7 rounded-full border flex items-center justify-center text-sm">+</button>
+              <button onclick="SwiftHelp.removeFromCart(${item.id}); renderCart();" class="ml-auto text-red-500 text-xs">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('cartTotal').textContent = SwiftHelp.formatNaira(SwiftHelp.getCartTotal());
+    }
+
+    function checkout() {
+      const cart = JSON.parse(localStorage.getItem('swiftCart')) || [];
+      if (cart.length === 0) {
+        SwiftHelp.showToast('Cart is empty', 'error');
+        return;
+      }
+      const total = SwiftHelp.getCartTotal();
+      const commission = Math.round(total * (SwiftHelp.commissionRate / 100));
+      
+      SwiftHelp.showToast(`Order placed! Total: ${SwiftHelp.formatNaira(total)}`, 'success');
+      SwiftHelp.clearCart();
+      renderCart();
+      setTimeout(() => {
+        toggleCart();
+        // In real app would go to order confirmation / tracking
+      }, 1500);
+    }
+
+    // Init
+    renderProducts(SwiftHelp.MOCK_PRODUCTS);
+  </script>
+</body>
+</html>

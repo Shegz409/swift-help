@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Live Tracking – Swift Help</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <nav class="bg-white sticky top-0 z-40 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-14">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-lg flex items-center justify-center text-white font-bold">S</div>
+          <span class="font-bold text-lg">Swift<span class="text-sky-500">Help</span></span>
+        </a>
+        <div id="authArea"></div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-bold">Live Tracking</h1>
+        <p class="text-slate-500 text-sm" id="trackingStatus">Monitoring your request...</p>
+      </div>
+      <span class="badge badge-success pulse-dot">● Live</span>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- Map -->
+      <div class="lg:col-span-2 card overflow-hidden">
+        <div id="trackMap" class="map-full"></div>
+      </div>
+
+      <!-- Info Panel -->
+      <div class="space-y-4">
+        <div class="card p-5" id="infoCard">
+          <!-- Filled by JS -->
+        </div>
+
+        <div class="card p-5">
+          <h3 class="font-semibold mb-3">Trip Progress</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm">✓</div>
+              <div>
+                <div class="font-medium text-sm">Request Accepted</div>
+                <div class="text-xs text-slate-400">Just now</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-sky-500 text-white flex items-center justify-center text-sm animate-pulse">2</div>
+              <div>
+                <div class="font-medium text-sm">On the way</div>
+                <div class="text-xs text-slate-400">ETA 6-8 min</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 opacity-40">
+              <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-sm">3</div>
+              <div>
+                <div class="font-medium text-sm">Arrived / Completed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card p-5">
+          <h3 class="font-semibold mb-3">Contact</h3>
+          <div class="flex gap-3">
+            <button class="flex-1 btn-outline text-sm py-2.5" onclick="SwiftHelp.showToast('Calling...', 'info')">📞 Call</button>
+            <button class="flex-1 btn-primary text-sm py-2.5" onclick="SwiftHelp.showToast('Chat opened', 'info')">💬 Chat</button>
+          </div>
+        </div>
+
+        <button onclick="location.href='../index.html'" class="w-full text-slate-500 text-sm py-2 hover:text-slate-700">
+          ← Back to Home
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/maps.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const providerId = params.get('provider');
+    const isRide = params.get('ride');
+
+    const map = SwiftMaps.createMap('trackMap', [6.5244, 3.3792], 13);
+
+    // User position
+    const userPos = [6.5244, 3.3792];
+    L.marker(userPos, { icon: SwiftMaps.createUserIcon() }).addTo(map).bindPopup('You');
+
+    let targetPos, targetName, targetType;
+
+    if (providerId) {
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id == providerId);
+      if (p) {
+        targetPos = [p.lat, p.lng];
+        targetName = p.name;
+        targetType = 'provider';
+        document.getElementById('trackingStatus').textContent = `Tracking ${p.name}`;
+        
+        document.getElementById('infoCard').innerHTML = `
+          <div class="flex gap-3 mb-4">
+            <img src="${p.image}" class="w-14 h-14 rounded-xl object-cover" />
+            <div>
+              <h3 class="font-bold">${p.name}</h3>
+              <p class="text-sm text-slate-500">${p.service}</p>
+              <div class="text-amber-500 text-sm">★ ${p.rating}</div>
+            </div>
+          </div>
+          <div class="text-sm space-y-2">
+            <div class="flex justify-between"><span class="text-slate-500">Status</span><span class="font-medium text-emerald-600">On the way</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">ETA</span><span class="font-medium">7 min</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Distance</span><span class="font-medium">2.4 km</span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Phone</span><span class="font-medium">${p.phone}</span></div>
+          </div>
+        `;
+
+        L.marker(targetPos, { icon: SwiftMaps.createProviderIcon() }).addTo(map).bindPopup(p.name);
+        SwiftMaps.drawRoute(map, userPos, targetPos, '#0ea5e9');
+        
+        // Simulate movement
+        setTimeout(() => {
+          SwiftMaps.simulateMovingMarker(map, targetPos, userPos, 10000, SwiftMaps.createProviderIcon('#10b981'));
+        }, 1500);
+      }
+    } else if (isRide) {
+      targetPos = [6.5300, 3.3750];
+      targetName = 'Driver Chinedu';
+      targetType = 'driver';
+      document.getElementById('trackingStatus').textContent = 'Tracking your driver';
+
+      document.getElementById('infoCard').innerHTML = `
+        <div class="flex gap-3 mb-4">
+          <div class="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center text-2xl">🛵</div>
+          <div>
+            <h3 class="font-bold">Chinedu O.</h3>
+            <p class="text-sm text-slate-500">Tricycle • ABJ-123-KE</p>
+            <div class="text-amber-500 text-sm">★ 4.9 (312 trips)</div>
+          </div>
+        </div>
+        <div class="text-sm space-y-2">
+          <div class="flex justify-between"><span class="text-slate-500">Status</span><span class="font-medium text-emerald-600">Arriving</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">ETA</span><span class="font-medium">5 min</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Vehicle</span><span class="font-medium">Yellow Keke</span></div>
+          <div class="flex justify-between"><span class="text-slate-500">Fare</span><span class="font-medium">₦1,800</span></div>
+        </div>
+      `;
+
+      L.marker(targetPos, { icon: SwiftMaps.createDriverIcon() }).addTo(map).bindPopup('Your driver');
+      SwiftMaps.drawRoute(map, targetPos, userPos, '#f59e0b');
+
+      // Simulate driver moving toward user
+      setTimeout(() => {
+        SwiftMaps.simulateMovingMarker(map, targetPos, userPos, 9000);
+      }, 1000);
+    } else {
+      // Default demo
+      document.getElementById('infoCard').innerHTML = `
+        <p class="text-slate-500 text-sm">No active tracking. Book a service or ride to see live tracking here.</p>
+        <div class="mt-4 space-y-2">
+          <a href="services.html" class="block btn-primary text-center text-sm py-2.5">Find Services</a>
+          <a href="ride.html" class="block btn-outline text-center text-sm py-2.5">Book a Ride</a>
+        </div>
+      `;
+      // Show some random providers
+      SwiftMaps.addProviderMarkers(map, SwiftHelp.MOCK_PROVIDERS.slice(0, 3));
+    }
+  </script>
+</body>
+</html>

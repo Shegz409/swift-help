@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Swift Help</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar text-white hidden md:flex flex-col">
+      <div class="p-5 border-b border-slate-700">
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-xl flex items-center justify-center font-bold">S</div>
+          <div>
+            <div class="font-bold">Swift Help</div>
+            <div class="text-xs text-slate-400">Admin Panel</div>
+          </div>
+        </div>
+      </div>
+      <nav class="flex-1 p-4 space-y-1">
+        <button onclick="showSection('overview')" class="nav-item active w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium bg-sky-600/30 text-sky-300">📊 Overview</button>
+        <button onclick="showSection('users')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">👥 Users</button>
+        <button onclick="showSection('jobs')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">🔧 Jobs & Orders</button>
+        <button onclick="showSection('rides')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">🛵 Rides</button>
+        <button onclick="showSection('providers')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">🏪 Providers</button>
+        <button onclick="showSection('commission')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">💰 Commission</button>
+        <button onclick="showSection('settings')" class="nav-item w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:bg-slate-800">⚙️ Settings</button>
+      </nav>
+      <div class="p-4 border-t border-slate-700">
+        <a href="index.html" class="block text-center text-sm text-slate-400 hover:text-white">← Back to Site</a>
+        <button onclick="SwiftHelp.logout()" class="w-full mt-2 text-sm text-red-400 hover:text-red-300">Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Top bar -->
+      <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+        <div class="flex items-center gap-3">
+          <button onclick="document.querySelector('aside').classList.toggle('hidden')" class="md:hidden p-2 rounded-lg hover:bg-slate-100">☰</button>
+          <h1 class="text-xl font-bold" id="pageTitle">Overview</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="badge badge-success">● System Online</span>
+          <div class="text-sm text-slate-500" id="adminName">Admin</div>
+        </div>
+      </header>
+
+      <div class="p-6">
+        <!-- OVERVIEW -->
+        <section id="section-overview" class="section">
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="card p-5">
+              <div class="text-sm text-slate-500 mb-1">Total Revenue</div>
+              <div class="text-2xl font-bold text-emerald-600" id="statRevenue">₦0</div>
+              <div class="text-xs text-slate-400 mt-1">All time</div>
+            </div>
+            <div class="card p-5">
+              <div class="text-sm text-slate-500 mb-1">Platform Commission</div>
+              <div class="text-2xl font-bold text-sky-600" id="statCommission">₦0</div>
+              <div class="text-xs text-slate-400 mt-1">Your earnings</div>
+            </div>
+            <div class="card p-5">
+              <div class="text-sm text-slate-500 mb-1">Active Jobs</div>
+              <div class="text-2xl font-bold" id="statJobs">0</div>
+              <div class="text-xs text-slate-400 mt-1">In progress</div>
+            </div>
+            <div class="card p-5">
+              <div class="text-sm text-slate-500 mb-1">Total Users</div>
+              <div class="text-2xl font-bold" id="statUsers">0</div>
+              <div class="text-xs text-slate-400 mt-1">Customers + Providers</div>
+            </div>
+          </div>
+
+          <div class="grid lg:grid-cols-2 gap-6">
+            <div class="card p-5">
+              <h3 class="font-semibold mb-4">Recent Jobs</h3>
+              <div class="space-y-3" id="recentJobs"></div>
+            </div>
+            <div class="card p-5">
+              <h3 class="font-semibold mb-4">Recent Rides</h3>
+              <div class="space-y-3" id="recentRides"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- USERS -->
+        <section id="section-users" class="section hidden">
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b flex justify-between items-center">
+              <h3 class="font-semibold">All Users</h3>
+              <button class="btn-primary text-sm py-2 px-4" onclick="SwiftHelp.showToast('Invite sent (demo)', 'info')">+ Invite User</button>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left">
+                  <tr>
+                    <th class="px-4 py-3 font-medium">Name</th>
+                    <th class="px-4 py-3 font-medium">Role</th>
+                    <th class="px-4 py-3 font-medium">Status</th>
+                    <th class="px-4 py-3 font-medium">Joined</th>
+                    <th class="px-4 py-3 font-medium">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTable">
+                  <tr class="border-t">
+                    <td class="px-4 py-3">Adaobi Okeke</td>
+                    <td class="px-4 py-3"><span class="badge badge-info">Customer</span></td>
+                    <td class="px-4 py-3"><span class="badge badge-success">Active</span></td>
+                    <td class="px-4 py-3 text-slate-500">2026-08-10</td>
+                    <td class="px-4 py-3"><button class="text-sky-600 text-xs hover:underline">View</button></td>
+                  </tr>
+                  <tr class="border-t">
+                    <td class="px-4 py-3">Adebayo Plumbing</td>
+                    <td class="px-4 py-3"><span class="badge badge-warning">Provider</span></td>
+                    <td class="px-4 py-3"><span class="badge badge-success">Active</span></td>
+                    <td class="px-4 py-3 text-slate-500">2026-07-22</td>
+                    <td class="px-4 py-3"><button class="text-sky-600 text-xs hover:underline">View</button></td>
+                  </tr>
+                  <tr class="border-t">
+                    <td class="px-4 py-3">Chinedu Okafor</td>
+                    <td class="px-4 py-3"><span class="badge badge-gray">Driver</span></td>
+                    <td class="px-4 py-3"><span class="badge badge-success">Active</span></td>
+                    <td class="px-4 py-3 text-slate-500">2026-08-01</td>
+                    <td class="px-4 py-3"><button class="text-sky-600 text-xs hover:underline">View</button></td>
+                  </tr>
+                  <tr class="border-t">
+                    <td class="px-4 py-3">Chioma Beauty</td>
+                    <td class="px-4 py-3"><span class="badge badge-warning">Provider</span></td>
+                    <td class="px-4 py-3"><span class="badge badge-success">Active</span></td>
+                    <td class="px-4 py-3 text-slate-500">2026-06-15</td>
+                    <td class="px-4 py-3"><button class="text-sky-600 text-xs hover:underline">View</button></td>
+                  </tr>
+                  <tr class="border-t">
+                    <td class="px-4 py-3">TechFix Gadgets</td>
+                    <td class="px-4 py-3"><span class="badge badge-warning">Provider</span></td>
+                    <td class="px-4 py-3"><span class="badge badge-danger">Suspended</span></td>
+                    <td class="px-4 py-3 text-slate-500">2026-05-30</td>
+                    <td class="px-4 py-3"><button class="text-sky-600 text-xs hover:underline">View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- JOBS -->
+        <section id="section-jobs" class="section hidden">
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b">
+              <h3 class="font-semibold">Jobs & Service Orders</h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left">
+                  <tr>
+                    <th class="px-4 py-3 font-medium">ID</th>
+                    <th class="px-4 py-3 font-medium">Type</th>
+                    <th class="px-4 py-3 font-medium">Provider</th>
+                    <th class="px-4 py-3 font-medium">Customer</th>
+                    <th class="px-4 py-3 font-medium">Amount</th>
+                    <th class="px-4 py-3 font-medium">Commission</th>
+                    <th class="px-4 py-3 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="jobsTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIDES -->
+        <section id="section-rides" class="section hidden">
+          <div class="card overflow-hidden">
+            <div class="p-4 border-b">
+              <h3 class="font-semibold">Ride History</h3>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-slate-50 text-left">
+                  <tr>
+                    <th class="px-4 py-3 font-medium">ID</th>
+                    <th class="px-4 py-3 font-medium">From → To</th>
+                    <th class="px-4 py-3 font-medium">Fare</th>
+                    <th class="px-4 py-3 font-medium">Commission</th>
+                    <th class="px-4 py-3 font-medium">Status</th>
+                    <th class="px-4 py-3 font-medium">Date</th>
+                  </tr>
+                </thead>
+                <tbody id="ridesTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROVIDERS -->
+        <section id="section-providers" class="section hidden">
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="providersAdmin"></div>
+        </section>
+
+        <!-- COMMISSION -->
+        <section id="section-commission" class="section hidden">
+          <div class="max-w-xl">
+            <div class="card p-6">
+              <h3 class="font-semibold text-lg mb-2">Commission Settings</h3>
+              <p class="text-sm text-slate-500 mb-6">Platform takes a percentage of every completed job, order and ride.</p>
+              
+              <div class="mb-6">
+                <label class="block text-sm font-medium mb-2">Current Commission Rate</label>
+                <div class="flex items-center gap-4">
+                  <input type="range" id="commissionSlider" min="5" max="30" value="15" class="flex-1" oninput="updateCommissionPreview(this.value)" />
+                  <span class="text-2xl font-bold text-sky-600 w-16" id="commissionValue">15%</span>
+                </div>
+              </div>
+
+              <div class="bg-slate-50 rounded-xl p-4 mb-6 text-sm space-y-2">
+                <div class="flex justify-between">
+                  <span>Example job of ₦10,000</span>
+                  <span class="font-medium" id="exJob">Provider gets ₦8,500</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>Platform earns</span>
+                  <span class="font-medium text-emerald-600" id="exEarn">₦1,500</span>
+                </div>
+              </div>
+
+              <button onclick="saveCommission()" class="btn-primary w-full py-3">Save Commission Rate</button>
+            </div>
+
+            <div class="card p-6 mt-6">
+              <h3 class="font-semibold mb-4">Commission Summary</h3>
+              <div class="space-y-3 text-sm" id="commissionSummary"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="section-settings" class="section hidden">
+          <div class="card p-6 max-w-xl">
+            <h3 class="font-semibold text-lg mb-4">Platform Settings</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">Platform Name</label>
+                <input type="text" value="Swift Help" class="w-full px-4 py-2.5 rounded-xl border border-slate-200" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Support Email</label>
+                <input type="email" value="support@swifthelp.ng" class="w-full px-4 py-2.5 rounded-xl border border-slate-200" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">Default City</label>
+                <input type="text" value="Lagos, Nigeria" class="w-full px-4 py-2.5 rounded-xl border border-slate-200" />
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm font-medium">Allow new provider registrations</span>
+                <input type="checkbox" checked class="w-5 h-5 rounded" />
+              </div>
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm font-medium">Require admin approval for providers</span>
+                <input type="checkbox" checked class="w-5 h-5 rounded" />
+              </div>
+              <button class="btn-primary mt-4" onclick="SwiftHelp.showToast('Settings saved (demo)', 'success')">Save Settings</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Simple auth check for demo
+    if (!SwiftHelp.currentUser || SwiftHelp.currentUser.role !== 'admin') {
+      // Allow access for demo but show notice
+      console.log('Demo mode: Admin access granted');
+    }
+
+    if (SwiftHelp.currentUser) {
+      document.getElementById('adminName').textContent = SwiftHelp.currentUser.name;
+    }
+
+    function showSection(name) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('section-' + name).classList.remove('hidden');
+      
+      document.querySelectorAll('.nav-item').forEach(n => {
+        n.classList.remove('bg-sky-600/30', 'text-sky-300');
+        n.classList.add('text-slate-300');
+      });
+      event.target.classList.add('bg-sky-600/30', 'text-sky-300');
+      event.target.classList.remove('text-slate-300');
+
+      const titles = {
+        overview: 'Overview',
+        users: 'Users Management',
+        jobs: 'Jobs & Orders',
+        rides: 'Rides',
+        providers: 'Providers',
+        commission: 'Commission Control',
+        settings: 'Settings'
+      };
+      document.getElementById('pageTitle').textContent = titles[name] || name;
+    }
+
+    // Calculate stats
+    const jobs = SwiftHelp.MOCK_JOBS;
+    const rides = SwiftHelp.MOCK_RIDES;
+    const totalRevenue = jobs.reduce((s, j) => s + j.amount, 0) + rides.reduce((s, r) => s + r.fare, 0);
+    const totalCommission = jobs.reduce((s, j) => s + j.commission, 0) + rides.reduce((s, r) => s + r.commission, 0);
+
+    document.getElementById('statRevenue').textContent = SwiftHelp.formatNaira(totalRevenue);
+    document.getElementById('statCommission').textContent = SwiftHelp.formatNaira(totalCommission);
+    document.getElementById('statJobs').textContent = jobs.filter(j => j.status === 'in-progress').length + rides.filter(r => r.status === 'in-progress').length;
+    document.getElementById('statUsers').textContent = '248';
+
+    // Recent jobs
+    document.getElementById('recentJobs').innerHTML = jobs.map(j => `
+      <div class="flex justify-between items-center text-sm">
+        <div>
+          <div class="font-medium">${j.type}</div>
+          <div class="text-xs text-slate-400">${j.provider} → ${j.customer}</div>
+        </div>
+        <div class="text-right">
+          <div class="font-medium">${SwiftHelp.formatNaira(j.amount)}</div>
+          <span class="badge ${j.status === 'completed' ? 'badge-success' : 'badge-warning'} text-[10px]">${j.status}</span>
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('recentRides').innerHTML = rides.map(r => `
+      <div class="flex justify-between items-center text-sm">
+        <div>
+          <div class="font-medium">${r.from} → ${r.to}</div>
+          <div class="text-xs text-slate-400">${r.id}</div>
+        </div>
+        <div class="text-right">
+          <div class="font-medium">${SwiftHelp.formatNaira(r.fare)}</div>
+          <span class="badge ${r.status === 'completed' ? 'badge-success' : 'badge-info'} text-[10px]">${r.status}</span>
+        </div>
+      </div>
+    `).join('');
+
+    // Jobs table
+    document.getElementById('jobsTable').innerHTML = jobs.map(j => `
+      <tr class="border-t">
+        <td class="px-4 py-3 font-mono text-xs">${j.id}</td>
+        <td class="px-4 py-3">${j.type}</td>
+        <td class="px-4 py-3">${j.provider}</td>
+        <td class="px-4 py-3">${j.customer}</td>
+        <td class="px-4 py-3 font-medium">${SwiftHelp.formatNaira(j.amount)}</td>
+        <td class="px-4 py-3 text-emerald-600">${SwiftHelp.formatNaira(j.commission)}</td>
+        <td class="px-4 py-3"><span class="badge ${j.status === 'completed' ? 'badge-success' : 'badge-warning'}">${j.status}</span></td>
+      </tr>
+    `).join('');
+
+    // Rides table
+    document.getElementById('ridesTable').innerHTML = rides.map(r => `
+      <tr class="border-t">
+        <td class="px-4 py-3 font-mono text-xs">${r.id}</td>
+        <td class="px-4 py-3">${r.from} → ${r.to}</td>
+        <td class="px-4 py-3 font-medium">${SwiftHelp.formatNaira(r.fare)}</td>
+        <td class="px-4 py-3 text-emerald-600">${SwiftHelp.formatNaira(r.commission)}</td>
+        <td class="px-4 py-3"><span class="badge ${r.status === 'completed' ? 'badge-success' : 'badge-info'}">${r.status}</span></td>
+        <td class="px-4 py-3 text-slate-500">${r.date}</td>
+      </tr>
+    `).join('');
+
+    // Providers
+    document.getElementById('providersAdmin').innerHTML = SwiftHelp.MOCK_PROVIDERS.map(p => `
+      <div class="card p-4">
+        <div class="flex gap-3">
+          <img src="${p.image}" class="w-14 h-14 rounded-xl object-cover" />
+          <div class="flex-1">
+            <h4 class="font-semibold">${p.name}</h4>
+            <p class="text-xs text-slate-500">${p.service}</p>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="text-amber-500 text-xs">★ ${p.rating}</span>
+              <span class="badge ${p.available ? 'badge-success' : 'badge-danger'} text-[10px]">${p.available ? 'Active' : 'Busy'}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-3">
+          <button class="flex-1 text-xs py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200" onclick="SwiftHelp.showToast('Provider details (demo)')">View</button>
+          <button class="flex-1 text-xs py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100" onclick="SwiftHelp.showToast('Provider suspended (demo)', 'info')">Suspend</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Commission
+    function updateCommissionPreview(val) {
+      document.getElementById('commissionValue').textContent = val + '%';
+      const providerGets = 10000 * (1 - val/100);
+      const platformGets = 10000 * (val/100);
+      document.getElementById('exJob').textContent = `Provider gets ${SwiftHelp.formatNaira(providerGets)}`;
+      document.getElementById('exEarn').textContent = SwiftHelp.formatNaira(platformGets);
+    }
+
+    function saveCommission() {
+      const rate = document.getElementById('commissionSlider').value;
+      SwiftHelp.setCommission(parseFloat(rate));
+      SwiftHelp.showToast(`Commission rate set to ${rate}%`, 'success');
+    }
+
+    // Init slider
+    document.getElementById('commissionSlider').value = SwiftHelp.commissionRate;
+    updateCommissionPreview(SwiftHelp.commissionRate);
+
+    document.getElementById('commissionSummary').innerHTML = `
+      <div class="flex justify-between"><span>Jobs commission earned</span><span class="font-medium text-emerald-600">${SwiftHelp.formatNaira(jobs.reduce((s,j)=>s+j.commission,0))}</span></div>
+      <div class="flex justify-between"><span>Rides commission earned</span><span class="font-medium text-emerald-600">${SwiftHelp.formatNaira(rides.reduce((s,r)=>s+r.commission,0))}</span></div>
+      <div class="flex justify-between border-t pt-2 mt-2"><span class="font-semibold">Total Platform Earnings</span><span class="font-bold text-emerald-600">${SwiftHelp.formatNaira(totalCommission)}</span></div>
+    `;
+  </script>
+</body>
+</html>

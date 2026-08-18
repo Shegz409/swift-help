@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Services – Swift Help</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+  <!-- Navbar -->
+  <nav class="bg-white sticky top-0 z-40 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="flex items-center justify-between h-16">
+        <a href="../index.html" class="flex items-center gap-2">
+          <div class="w-9 h-9 bg-gradient-to-br from-sky-500 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg">S</div>
+          <span class="font-bold text-xl">Swift<span class="text-sky-500">Help</span></span>
+        </a>
+        <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a href="services.html" class="text-sky-600">Services</a>
+          <a href="marketplace.html" class="hover:text-sky-600">Marketplace</a>
+          <a href="ride.html" class="hover:text-sky-600">Book Ride</a>
+          <a href="tracking.html" class="hover:text-sky-600">Track</a>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="marketplace.html" class="relative p-2 hover:bg-slate-100 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            <span class="cart-count cart-badge" style="display:none">0</span>
+          </a>
+          <div id="authArea"></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl md:text-3xl font-bold">Find Services</h1>
+        <p class="text-slate-500">Home services or walk-in shops near you</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="filterProviders('all')" id="btn-all" class="px-4 py-2 rounded-xl text-sm font-medium bg-sky-500 text-white">All</button>
+        <button onclick="filterProviders('home')" id="btn-home" class="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 hover:bg-slate-50">Home</button>
+        <button onclick="filterProviders('walkin')" id="btn-walkin" class="px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 hover:bg-slate-50">Walk-in</button>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="mb-6">
+      <input type="text" id="serviceSearch" placeholder="Search plumbing, salon, repair..." 
+        class="w-full md:w-96 px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent"
+        oninput="searchProviders(this.value)" />
+    </div>
+
+    <div class="grid lg:grid-cols-5 gap-6">
+      <!-- Map (takes more space) -->
+      <div class="lg:col-span-3 card overflow-hidden">
+        <div id="servicesMap" class="map-full"></div>
+      </div>
+
+      <!-- Provider cards -->
+      <div class="lg:col-span-2 space-y-4 max-h-[calc(100vh-180px)] overflow-y-auto" id="providersContainer">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Provider Detail Modal -->
+  <div id="providerModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-fade-in">
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Mobile bottom nav -->
+  <div class="bottom-nav md:hidden">
+    <div class="flex justify-around py-2">
+      <a href="../index.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1h-2z"/></svg>
+        Home
+      </a>
+      <a href="services.html" class="flex flex-col items-center text-sky-600 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Services
+      </a>
+      <a href="marketplace.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        Shop
+      </a>
+      <a href="ride.html" class="flex flex-col items-center text-slate-500 text-xs">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Ride
+      </a>
+    </div>
+  </div>
+  <div class="h-16 md:hidden"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/maps.js"></script>
+  <script>
+    let map, markers = [];
+    let currentFilter = 'all';
+    let filteredProviders = [...SwiftHelp.MOCK_PROVIDERS];
+
+    // Init map
+    map = SwiftMaps.createMap('servicesMap', [6.52, 3.37], 12);
+    
+    // Check URL params
+    const params = new URLSearchParams(location.search);
+    if (params.get('type')) {
+      filterProviders(params.get('type'));
+    } else {
+      renderProviders(filteredProviders);
+    }
+    if (params.get('id')) {
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id == params.get('id'));
+      if (p) openProvider(p);
+    }
+
+    function renderProviders(list) {
+      // Clear old markers
+      markers.forEach(m => map.removeLayer(m));
+      markers = SwiftMaps.addProviderMarkers(map, list, (p) => openProvider(p));
+
+      const container = document.getElementById('providersContainer');
+      if (list.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-slate-400">No providers found</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(p => `
+        <div class="card p-4 cursor-pointer hover:shadow-md transition" onclick="openProvider(${JSON.stringify(p).replace(/"/g, '&quot;')})">
+          <div class="flex gap-3">
+            <img src="${p.image}" class="w-16 h-16 rounded-xl object-cover" alt="${p.name}" />
+            <div class="flex-1 min-w-0">
+              <div class="flex justify-between items-start">
+                <h3 class="font-semibold truncate">${p.name}</h3>
+                <span class="badge ${p.category === 'home' ? 'badge-info' : 'badge-gray'} text-[10px]">${p.category === 'home' ? 'Home' : 'Walk-in'}</span>
+              </div>
+              <p class="text-xs text-slate-500">${p.service}</p>
+              <div class="flex items-center gap-2 mt-1 text-xs">
+                <span class="text-amber-500">★ ${p.rating}</span>
+                <span class="text-slate-400">${p.responseTime}</span>
+              </div>
+              <div class="text-sky-600 font-semibold text-sm mt-1">${p.price}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterProviders(type) {
+      currentFilter = type;
+      document.querySelectorAll('[id^="btn-"]').forEach(b => {
+        b.className = 'px-4 py-2 rounded-xl text-sm font-medium bg-white border border-slate-200 hover:bg-slate-50';
+      });
+      document.getElementById('btn-' + type).className = 'px-4 py-2 rounded-xl text-sm font-medium bg-sky-500 text-white';
+
+      filteredProviders = type === 'all' 
+        ? [...SwiftHelp.MOCK_PROVIDERS] 
+        : SwiftHelp.MOCK_PROVIDERS.filter(p => p.category === type);
+      renderProviders(filteredProviders);
+    }
+
+    function searchProviders(q) {
+      q = q.toLowerCase();
+      const base = currentFilter === 'all' ? SwiftHelp.MOCK_PROVIDERS : SwiftHelp.MOCK_PROVIDERS.filter(p => p.category === currentFilter);
+      filteredProviders = base.filter(p => 
+        p.name.toLowerCase().includes(q) || 
+        p.service.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q)
+      );
+      renderProviders(filteredProviders);
+    }
+
+    function openProvider(p) {
+      if (typeof p === 'string') p = JSON.parse(p.replace(/&quot;/g, '"'));
+      
+      const modal = document.getElementById('providerModal');
+      document.getElementById('modalContent').innerHTML = `
+        <div class="relative">
+          <img src="${p.image}" class="w-full h-48 object-cover rounded-t-2xl" />
+          <button onclick="closeModal()" class="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow">✕</button>
+        </div>
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <h2 class="text-xl font-bold">${p.name}</h2>
+              <p class="text-slate-500">${p.service}</p>
+            </div>
+            <span class="badge ${p.available ? 'badge-success' : 'badge-danger'}">${p.available ? 'Available' : 'Busy'}</span>
+          </div>
+          
+          <div class="flex items-center gap-4 text-sm mb-4">
+            <span class="text-amber-500 font-medium">★ ${p.rating} (${p.reviews} reviews)</span>
+            <span class="text-slate-500">⏱ ${p.responseTime}</span>
+          </div>
+
+          <p class="text-slate-600 text-sm mb-4">${p.description}</p>
+          
+          <div class="bg-slate-50 rounded-xl p-3 mb-4 text-sm">
+            <div class="flex items-center gap-2 text-slate-600 mb-1">
+              <span>📍</span> ${p.address}
+            </div>
+            <div class="flex items-center gap-2 text-slate-600">
+              <span>📞</span> ${p.phone}
+            </div>
+          </div>
+
+          <div class="text-lg font-bold text-sky-600 mb-5">${p.price}</div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <button onclick="requestService(${p.id}, 'visit')" class="btn-primary text-sm py-3">
+              ${p.category === 'home' ? 'Request Home Visit' : 'Get Directions'}
+            </button>
+            <button onclick="requestService(${p.id}, 'call')" class="btn-outline text-sm py-3">
+              Call Provider
+            </button>
+          </div>
+          
+          <button onclick="openTracking(${p.id})" class="w-full mt-3 bg-emerald-50 text-emerald-700 font-medium py-3 rounded-xl text-sm hover:bg-emerald-100 transition">
+            📍 Track / Navigate on Map
+          </button>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      document.getElementById('providerModal').classList.add('hidden');
+      document.getElementById('providerModal').classList.remove('flex');
+    }
+
+    function requestService(id, type) {
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id === id);
+      if (type === 'call') {
+        SwiftHelp.showToast(`Calling ${p.name}...`, 'info');
+      } else {
+        SwiftHelp.showToast(`Service request sent to ${p.name}!`, 'success');
+        setTimeout(() => {
+          closeModal();
+          location.href = 'tracking.html?provider=' + id;
+        }, 1200);
+      }
+    }
+
+    function openTracking(id) {
+      location.href = 'tracking.html?provider=' + id;
+    }
+
+    // Close modal on outside click
+    document.getElementById('providerModal').addEventListener('click', e => {
+      if (e.target.id === 'providerModal') closeModal();
+    });
+
+    window.selectProvider = (id) => {
+      const p = SwiftHelp.MOCK_PROVIDERS.find(x => x.id === id);
+      if (p) openProvider(p);
+    };
+  </script>
+</body>
+</html>
